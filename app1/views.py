@@ -6,7 +6,9 @@ from app1.models import Producto
 # Create your views here.
 
 def listado_productos(request):
-    productos = Producto.objects.all()
+    max_productos = 12
+    productos = Producto.objects.all()[:max_productos]
+    carousel_productos = productos[:8]
     categorias = [
         {'id': 'ropa', 'nombre': 'Ropa', 'icono': 'fa-tshirt'},
         {'id': 'tecnologia', 'nombre': 'Tecnología', 'icono': 'fa-laptop'},
@@ -17,7 +19,11 @@ def listado_productos(request):
         {'id': 'juguetes', 'nombre': 'Juguetes', 'icono': 'fa-gamepad'},
         {'id': 'libros', 'nombre': 'Libros', 'icono': 'fa-book'},
     ]
-    return render(request, 'lista_productos.html', {'productos': productos, 'categorias': categorias})
+    return render(request, 'lista_productos.html', {
+        'productos': productos,
+        'carousel_productos': carousel_productos,
+        'categorias': categorias,
+    })
 
 
 def catalogo_ropa(request):
@@ -150,3 +156,4 @@ def catalogo_categoria(request, slug):
         'category_description': categoria['description'],
         'subcategorias': categoria['subcategorias'],
     })
+
