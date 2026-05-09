@@ -1,0 +1,181 @@
+:root {
+    --bg-color: #111111;
+    --element-bg: #1C1C1C;
+    --element-hover: #2A2A2A;
+    --primary-color: #EAB308;
+    --text-color: #FEF9C3;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.navbar-custom {
+    background-color: var(--element-bg);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid var(--element-hover);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: var(--text-color) !important;
+}
+
+.nav-link {
+    color: var(--text-color) !important;
+    opacity: 0.8;
+    transition: opacity 0.3s, color 0.3s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    opacity: 1;
+    color: var(--primary-color) !important;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, var(--element-bg) 0%, var(--bg-color) 100%);
+    color: var(--text-color);
+    padding: 4rem 0;
+    border-radius: 0 0 2rem 2rem;
+    margin-bottom: 3rem;
+    text-align: center;
+    border-bottom: 2px solid var(--primary-color);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+.category-card {
+    border: 1px solid var(--element-hover);
+    border-radius: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s;
+    cursor: pointer;
+    overflow: hidden;
+    background-color: var(--element-bg);
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--text-color);
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    background-color: var(--element-hover);
+    box-shadow: 0 10px 20px rgba(234, 179, 8, 0.15);
+    border-color: var(--primary-color);
+}
+
+.category-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.product-card {
+    border: 1px solid var(--element-hover);
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+    background-color: var(--element-bg);
+    overflow: hidden;
+    color: var(--text-color);
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(234, 179, 8, 0.15);
+    border-color: var(--primary-color);
+}
+
+.product-card .card-body {
+    padding: 1.5rem;
+}
+
+.product-card .card-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.product-price {
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+}
+
+.btn-custom {
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-custom:hover {
+    background-color: #fde047;
+    color: var(--bg-color);
+    transform: scale(1.05);
+}
+
+.section-title {
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: var(--text-color);
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 50px;
+    height: 4px;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+}
+
+/* Overrides for Bootstrap utilities in dark mode */
+.text-muted {
+    color: #888 !important;
+}
+
+.border-bottom {
+    border-bottom-color: var(--element-hover) !important;
+}
+
+.placeholder-image {
+    background-color: var(--element-hover);
+    border-bottom: 1px solid var(--element-bg);
+}
+
+.placeholder-image i {
+    color: var(--text-color);
+    opacity: 0.2;
+}
+
+.badge-custom {
+    background-color: var(--element-hover);
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.alert-custom {
+    background-color: var(--element-bg);
+    border: 1px solid var(--primary-color);
+    color: var(--text-color);
+}
+
+footer {
+    background-color: var(--element-bg);
+    border-top: 1px solid var(--element-hover);
+    color: var(--text-color);
+}
+.carousel-inner-custom { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); border-radius: 0 0 2rem 2rem; overflow: hidden; }
+.carousel-slide-custom { background: linear-gradient(135deg, var(--bg-color) 0%, var(--element-bg) 100%); border-bottom: 2px solid var(--primary-color); padding: 4rem 0; }
+.product-icon-circle { background-color: var(--element-hover); border-radius: 50%; width: 150px; height: 150px; display: inline-flex; align-items: center; justify-content: center; }
+.text-gold { color: var(--primary-color) !important; }
+.text-light-custom { color: var(--text-color) !important; }
+.text-dark-custom { color: var(--bg-color) !important; }
