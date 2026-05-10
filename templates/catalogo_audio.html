@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catalogo de Tecnología - NEX COR</title>
+    <title>Audio - NEX COR</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
@@ -24,7 +24,7 @@
                         <a class="nav-link" href="{% url 'home' %}">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Tecnología</a>
+                        <a class="nav-link active" href="{% url 'catalogo_tecnologia' %}">Tecnología</a>
                     </li>
                 </ul>
             </div>
@@ -33,45 +33,46 @@
 
     <div class="container py-5">
         <div class="hero-section mb-5 text-center">
-            <h1 class="display-5 fw-bold text-gold">Catálogo de Tecnología</h1>
-            <p class="lead text-light-custom">Selecciona entre Computación, Gaming, Audio y Gadgets inteligentes.</p>
+            <h1 class="display-5 fw-bold text-gold">Audio</h1>
+            <p class="lead text-light-custom">Auriculares, bocinas y soluciones de sonido para el día a día.</p>
+
         </div>
 
         <div class="row g-4 justify-content-center">
             <div class="col-12 col-md-6 col-xl-3 d-flex">
                 <div class="category-card h-100 d-flex flex-column justify-content-between w-100">
                     <div>
-                        <h4 class="fw-bold">Computación</h4>
-                        <p class="text-muted mb-4">Laptops, accesorios y componentes para trabajar y estudiar.</p>
+                        <h4 class="fw-bold">Auriculares</h4>
+                        <p class="text-muted mb-4">Inalámbricos, con cable y deportivos.</p>
                     </div>
-                    <a href="{% url 'vista_categorias' 'computacion' %}" class="btn btn-custom mt-auto text-decoration-none">Ver Computación</a>
+                    <a href="{% url 'productos_subcategoria' 'Auriculares' %}" class="btn btn-custom mt-auto text-decoration-none">Ver Auriculares</a>
                 </div>
             </div>
             <div class="col-12 col-md-6 col-xl-3 d-flex">
                 <div class="category-card h-100 d-flex flex-column justify-content-between w-100">
                     <div>
-                        <h4 class="fw-bold">Gaming</h4>
-                        <p class="text-muted mb-4">Hardware y periféricos para gaming a otro nivel.</p>
+                        <h4 class="fw-bold">Bocinas</h4>
+                        <p class="text-muted mb-4">Bluetooth, portátiles y de escritorio.</p>
                     </div>
-                    <a href="{% url 'vista_categorias' 'gaming' %}" class="btn btn-custom mt-auto text-decoration-none">Ver Gaming</a>
+                    <a href="{% url 'productos_subcategoria' 'Bocinas' %}" class="btn btn-custom mt-auto text-decoration-none">Ver Bocinas</a>
                 </div>
             </div>
             <div class="col-12 col-md-6 col-xl-3 d-flex">
                 <div class="category-card h-100 d-flex flex-column justify-content-between w-100">
                     <div>
-                        <h4 class="fw-bold">Audio</h4>
-                        <p class="text-muted mb-4">Auriculares, bocinas y soluciones de sonido para el día a día.</p>
+                        <h4 class="fw-bold">Headsets</h4>
+                        <p class="text-muted mb-4">Micrófono para llamadas y streaming.</p>
                     </div>
-                    <a href="{% url 'vista_categorias' 'audio' %}" class="btn btn-custom mt-auto text-decoration-none">Ver Audio</a>
+                    <a href="{% url 'productos_subcategoria' 'Headsets' %}" class="btn btn-custom mt-auto text-decoration-none">Ver Headsets</a>
                 </div>
             </div>
             <div class="col-12 col-md-6 col-xl-3 d-flex">
                 <div class="category-card h-100 d-flex flex-column justify-content-between w-100">
                     <div>
-                        <h4 class="fw-bold">Gadgets</h4>
-                        <p class="text-muted mb-4">Dispositivos inteligentes y chucherías tecnológicas.</p>
+                        <h4 class="fw-bold">Sistemas de Sonido</h4>
+                        <p class="text-muted mb-4">Barras de sonido y equipos profesionales.</p>
                     </div>
-                    <a href="{% url 'vista_categorias' 'gadgets' %}" class="btn btn-custom mt-auto text-decoration-none">Ver Gadgets</a>
+                    <a href="{% url 'productos_subcategoria' 'Sistemas' %}" class="btn btn-custom mt-auto text-decoration-none">Ver Sistemas</a>
                 </div>
             </div>
         </div>
@@ -79,12 +80,11 @@
 
     <footer class="py-4 mt-5 text-center">
         <div class="container">
-            <a href="{% url 'home' %}" class="btn btn-custom mb-3">← Volver al Inicio</a>
+            <a href="{% url 'catalogo_tecnologia' %}" class="btn btn-custom mb-3">← Volver Atrás</a>
             <p class="mb-0">&copy; 2026 NEX COR. Todos los derechos reservados.</p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
