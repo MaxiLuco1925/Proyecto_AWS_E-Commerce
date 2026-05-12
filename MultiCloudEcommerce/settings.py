@@ -82,8 +82,6 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-<<<<<<< HEAD
-=======
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -100,4 +98,3 @@ DATABASES ={
 }
 
 
->>>>>>> 7d890b7 (Avance final)
