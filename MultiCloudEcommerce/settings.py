@@ -82,3 +82,22 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+<<<<<<< HEAD
+=======
+
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DATABASES ={
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'nexcordb',
+        'USER': 'admin',
+        'PASSWORD': 'Inacap2026',
+        'HOST':'nexcordb.ck30twipbvsn.us-east-1.rds.amazonaws.com',
+        'PORT':3306
+
+    }
+}
+
+
+>>>>>>> 7d890b7 (Avance final)

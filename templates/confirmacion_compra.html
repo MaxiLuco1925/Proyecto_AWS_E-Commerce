@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <title>Confirmación de Compra - Nex Cor</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+                <img src="{% static 'img/Nex COR.png' %}" alt="Logo NEX COR" width="40" height="40" class="d-inline-block align-top me-2">
+                NEX COR
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'perfil' %}">Perfil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'listado_pedidos' %}">Mis Pedidos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Mensaje de Confirmación -->
+                <div class="text-center mb-5">
+                    <div style="background-color: var(--element-bg); border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 2rem; padding: 3rem; margin-bottom: 2rem;">
+                        <div style="display: inline-block; width: 100px; height: 100px; background: linear-gradient(135deg, var(--primary-color) 0%, #ca9a04 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; box-shadow: 0 0 40px rgba(234, 179, 8, 0.5);">
+                            <i class="bi bi-check-circle fs-1" style="color: var(--bg-color);"></i>
+                        </div>
+                        <h2 class="mb-3" style="color: var(--primary-color); font-family: 'Orbitron', sans-serif; font-weight: 900; letter-spacing: 2px;">
+                            ¡COMPRA EXITOSA!
+                        </h2>
+                        <p style="color: var(--text-color); font-size: 1.1rem; margin-bottom: 1rem;">
+                            Tu pedido ha sido procesado correctamente.
+                        </p>
+                        <p style="color: var(--text-muted); font-size: 0.95rem;">
+                            Te enviaremos un correo de confirmación con los detalles del pedido y la información de seguimiento.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Información del Pedido -->
+                <div class="card shadow-lg" style="background-color: var(--element-bg); border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 0.75rem; margin-bottom: 2rem;">
+                    <div class="card-header" style="background-color: rgba(10, 10, 10, 0.97); border-bottom: 1px solid rgba(234, 179, 8, 0.2);">
+                        <h5 class="mb-0" style="color: var(--primary-color); font-family: 'Orbitron', sans-serif; font-weight: 700;">
+                            <i class="bi bi-receipt me-2"></i>Detalles del Pedido
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p style="color: var(--text-muted); font-size: 0.9rem;">Número de Pedido</p>
+                                <p style="color: var(--text-color); font-size: 1.2rem; font-family: 'Orbitron', sans-serif; font-weight: 700;">
+                                    #000001
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <p style="color: var(--text-muted); font-size: 0.9rem;">Fecha</p>
+                                <p style="color: var(--text-color); font-size: 1rem;">
+                                    {{ "now"|date:"d/m/Y H:i" }}
+                                </p>
+                            </div>
+                        </div>
+                        <hr style="border-color: rgba(234, 179, 8, 0.15);">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p style="color: var(--text-muted); font-size: 0.9rem;">Estado del Pedido</p>
+                                <p style="color: var(--text-color);">
+                                    <span style="background-color: var(--element-hover); border: 1px solid rgba(234, 179, 8, 0.4); padding: 0.3rem 0.8rem; border-radius: 1rem; color: var(--primary-color); font-weight: 600; font-size: 0.85rem;">
+                                        ✓ Procesando
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <p style="color: var(--text-muted); font-size: 0.9rem;">Método de Pago</p>
+                                <p style="color: var(--text-color);">
+                                    <i class="bi bi-credit-card me-2" style="color: var(--primary-color);"></i>Tarjeta de Crédito
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información de Envío -->
+                <div class="card shadow-lg" style="background-color: var(--element-bg); border: 1px solid rgba(234, 179, 8, 0.15); border-radius: 0.75rem; margin-bottom: 2rem;">
+                    <div class="card-header" style="background-color: rgba(10, 10, 10, 0.97); border-bottom: 1px solid rgba(234, 179, 8, 0.2);">
+                        <h5 class="mb-0" style="color: var(--primary-color); font-family: 'Orbitron', sans-serif; font-weight: 700;">
+                            <i class="bi bi-truck me-2"></i>Información de Envío
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div style="color: var(--text-color);">
+                            <p class="mb-2">
+                                <strong>Juan Pérez</strong><br>
+                                <span style="color: var(--text-muted); font-size: 0.9rem;">
+                                    Calle Principal 123, Calama, Región de Antofagasta<br>
+                                    Código Postal: 12345, Chile
+                                </span>
+                            </p>
+                            <p class="mb-0">
+                                <i class="bi bi-telephone me-2" style="color: var(--primary-color);"></i>
+                                <span style="color: var(--text-muted); font-size: 0.9rem;">+56 9 1234 5678</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pasos Siguientes -->
+                <div style="background-color: var(--element-hover); border: 1px solid rgba(234, 179, 8, 0.2); border-radius: 0.75rem; padding: 2rem; margin-bottom: 2rem;">
+                    <h5 style="color: var(--primary-color); font-family: 'Orbitron', sans-serif; font-weight: 700; margin-bottom: 1.5rem;">
+                        <i class="bi bi-list-check me-2"></i>Pasos Siguientes
+                    </h5>
+                    <div style="color: var(--text-color);">
+                        <div class="mb-3 pb-3" style="border-bottom: 1px solid rgba(234, 179, 8, 0.15);">
+                            <p class="mb-2">
+                                <span style="background-color: var(--element-bg); border: 1px solid rgba(234, 179, 8, 0.4); border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; color: var(--primary-color); font-weight: 700; margin-right: 0.5rem;">1</span>
+                                <strong>Confirma tu correo electrónico</strong>
+                            </p>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-left: 3rem;">
+                                Hemos enviado un correo de confirmación a tu dirección de email.
+                            </p>
+                        </div>
+                        <div class="mb-3 pb-3" style="border-bottom: 1px solid rgba(234, 179, 8, 0.15);">
+                            <p class="mb-2">
+                                <span style="background-color: var(--element-bg); border: 1px solid rgba(234, 179, 8, 0.4); border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; color: var(--primary-color); font-weight: 700; margin-right: 0.5rem;">2</span>
+                                <strong>Seguimiento del envío</strong>
+                            </p>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-left: 3rem;">
+                                Recibirás un número de seguimiento cuando el pedido sea enviado.
+                            </p>
+                        </div>
+                        <div>
+                            <p class="mb-2">
+                                <span style="background-color: var(--element-bg); border: 1px solid rgba(234, 179, 8, 0.4); border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; color: var(--primary-color); font-weight: 700; margin-right: 0.5rem;">3</span>
+                                <strong>Entrega estimada</strong>
+                            </p>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-left: 3rem;">
+                                Tu pedido llegará entre 5-7 días hábiles.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="d-grid gap-2 mb-4">
+                    <a href="{% url 'listado_pedidos' %}" class="btn btn-custom btn-lg text-uppercase">
+                        <i class="bi bi-receipt me-2"></i>Ver Mis Pedidos
+                    </a>
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary text-uppercase" style="border-color: rgba(234, 179, 8, 0.3); color: var(--text-color);">
+                        <i class="bi bi-shop me-2"></i>Seguir Comprando
+                    </a>
+                </div>
+
+                <!-- Contacto -->
+                <div class="alert" style="background-color: var(--element-hover); border: 1px solid rgba(234, 179, 8, 0.2); color: var(--text-color); text-align: center;">
+                    <i class="bi bi-question-circle me-2" style="color: var(--primary-color);"></i>
+                    <small>
+                        ¿Tienes preguntas? Contáctanos a <strong>soporte@nexcor.com</strong> o llama al <strong>+56 9 1234 5678</strong>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-5 py-4">
+        <div class="container text-center">
+            <p class="mb-0" style="color: var(--text-muted); font-size: 0.9rem;">
+                &copy; 2026 NEX COR. Todos los derechos reservados | <i class="bi bi-cloud-check-fill" style="color: var(--primary-color);"></i> Powered by AWS
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
