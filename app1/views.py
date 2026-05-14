@@ -1,6 +1,6 @@
 import boto3
 import time
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db import transaction
@@ -65,7 +65,6 @@ def home(request):
         'carousel_productos': carousel_productos,
     })
 
-from django.contrib.auth.hashers import check_password # IMPORTANTE
 
 @csrf_protect
 def iniciar_sesion(request):
@@ -76,26 +75,23 @@ def iniciar_sesion(request):
             password_ingresada = form.cleaned_data["contraseña"]
 
             try:
-                # 1. Buscamos al cliente SOLO por email
                 cliente = Cliente.objects.get(email=email)
                 
-                # 2. Comparamos la contraseña ingresada con el hash de la DB
                 if check_password(password_ingresada, cliente.contraseña):
-                    # ¡ÉXITO! Creamos la sesión
                     request.session['cliente_id'] = cliente.id_cliente
                     request.session['cliente_email'] = cliente.email
-                    
-                    # TIP DE SEGURIDAD: Nunca guardes la contraseña (ni el hash) en la sesión
-                    # request.session['cliente_contraseña'] = cliente.contraseña <-- ELIMINAR ESTO
+                    request.session['es_admin'] = cliente.es_admin 
                     
                     messages.success(request, f"¡Bienvenido de nuevo, {cliente.nombre}!")
-                    return redirect("home")
+
+                    if cliente.es_admin:
+                        return redirect("panel_admin")
+                    else:
+                        return redirect("home")
                 else:
-                    # Contraseña incorrecta
                     messages.error(request, "Correo o contraseña incorrectos.")
             
             except Cliente.DoesNotExist:
-                # El correo no existe
                 messages.error(request, "Correo o contraseña incorrectos.")
                 
             return render(request, 'inicioSesion.html', {'form': form})
@@ -103,6 +99,7 @@ def iniciar_sesion(request):
         form = InicioSesionForm()
 
     return render(request, 'inicioSesion.html', {'form': form})
+    
 
 
 def perfil(request):
@@ -342,3 +339,45 @@ def checkout(request):
 
 def confirmacion_compra(request):
     return render(request, 'confirmacion_compra.html')
+
+
+
+def panel_admin(request):
+    pedidos = Pedido.objects.all().order_by('-fecha')
+    return render(request, 'panel_admin.html', {'pedidos': pedidos})
+
+
+def listausuarios(request):                                               
+    clientes = Cliente.objects.all().order_by('nombre')
+    return render(request, 'listado_clientes.html', {'clientes': clientes}) 
+
+def listadoProductos(request):
+    productos = Producto.objects.all().order_by('precio_producto')
+    return render(request, 'inventario.html', {'productos' : productos} )
+
+
+
+def gestionarPedidoAdmin(request, pedido_id):
+    pedido = get_object_or_404(Pedido, pedido_id=pedido_id)
+    detalles = DetallePedido.objects.filter(pedido=pedido)
+    total = sum(item.cantidad * item.producto.precio_producto for item in detalles if item.producto)
+
+    context = {
+        'pedido': pedido,
+        'detalles': detalles,
+        'total': total,
+    }
+    return render(request, 'gestionar_pedido.html', context)
+
+
+def perfilAdministrador(request):
+    cliente_id = request.session.get('cliente_id')
+    if not cliente_id:
+        return redirect('iniciarSesion')
+    try:
+        cliente = Cliente.objects.get(id_cliente=cliente_id)
+        data = {'Cliente': cliente}
+        return render(request, 'perfil_administrador.html', data)
+    except Cliente.DoesNotExist:
+        messages.error(request, "Cliente no encontrado.")
+        return redirect('home')

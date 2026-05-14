@@ -1,13 +1,14 @@
 from django.db import models
 
 
-
 class Cliente(models.Model):
     id_cliente = models.AutoField(db_column='ID_CLIENTE', primary_key=True) 
     nombre = models.CharField(db_column='NOMBRE', max_length=40, blank=True, null=True)  
     email = models.CharField(db_column='EMAIL', max_length=60, null=True)  
     telefono = models.CharField(db_column='TELEFONO', max_length=30, blank=True, null=True)  
     contraseña = models.CharField(db_column='CONTRASEÑA',max_length=256)
+    es_admin = models.BooleanField(default=False)
+
 
 
     class Meta:
@@ -47,9 +48,5 @@ class DetallePedido(models.Model):
     class Meta:
         managed = True
         db_table = 'DETALLE_PEDIDO'
-
-
-
-
 
 
