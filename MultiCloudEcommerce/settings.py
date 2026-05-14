@@ -88,10 +88,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DATABASES ={
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'nexcordb',
-        'USER': 'admin',
-        'PASSWORD': 'Inacap2026',
-        'HOST':'nexcordb.ck30twipbvsn.us-east-1.rds.amazonaws.com',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST':'',
         'PORT':3306
 
     }
