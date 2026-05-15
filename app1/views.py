@@ -8,8 +8,10 @@ from app1.models import Cliente, Producto, Pedido, DetallePedido
 from app1.forms import InicioSesionForm
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.hashers import make_password, check_password
-import decimal
 from decimal import Decimal
+from datetime import datetime
+from boto3.dynamodb.types import TypeDeserializer 
+import json
 
 def registro(request):
     if request.method == 'POST':
@@ -381,3 +383,79 @@ def perfilAdministrador(request):
     except Cliente.DoesNotExist:
         messages.error(request, "Cliente no encontrado.")
         return redirect('home')
+    
+
+
+def ver_dynamodb(request):
+    """Ver datos de DynamoDB"""
+    
+    if not request.session.get('es_admin', False):
+        return redirect('iniciarSesion')
+    
+    try:
+        dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+        tabla = dynamodb.Table('registro_actividades')
+        
+        response = tabla.scan()
+        actividades = response.get('Items', [])
+        
+        # Ordenar y formatear fechas
+        from datetime import datetime
+        actividades.sort(key=lambda x: x.get('timestamp', 0), reverse=True)
+        
+        for actividad in actividades:
+            if 'timestamp' in actividad:
+                actividad['fecha'] = datetime.fromtimestamp(actividad['timestamp']).strftime('%Y-%m-%d %H:%M:%S')
+        
+        return render(request, 'ver_dynamodb.html', {'actividades': actividades})
+    
+    except Exception as e:
+        return render(request, 'ver_dynamodb.html', {'error': str(e)})
+    
+
+
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, Decimal):
+            return int(o) if o % 1 == 0 else float(o)
+        return super(DecimalEncoder, self).default(o)
+
+def ver_dynamodb(request):
+    try:
+        dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+        tabla = dynamodb.Table('registro_actividades')
+        response = tabla.scan()
+        items_AWS = response.get('Items', [])
+        items_ETL = []
+        for item in items_AWS:
+            tiempo = json.loads(json.dumps(item, cls=DecimalEncoder))
+        
+            fecha_legible = "Fecha no disponible"
+            if 'timestamp' in tiempo:
+                try:
+                    fecha_legible = datetime.fromtimestamp(int(tiempo['timestamp'])).strftime('%d/%m/%Y %H:%M:%S')
+                except:
+                    pass
+            
+            detalles = tiempo.get('detalles', {})
+            
+            registro = {
+                'usuario_id': tiempo.get('userid', 'N/A'),
+                'tipo_evento': tiempo.get('evento', 'OTRO').replace('_', ' '),
+                'fecha': fecha_legible,
+                'nombre': detalles.get('nombre_registrado') or detalles.get('cliente_email') or 'No aplica',
+                'correo': detalles.get('email_contacto') or detalles.get('cliente_email') or 'No aplica',
+                'metodo': detalles.get('metodo_registro') or detalles.get('metodo_pago') or 'N/A',
+                'monto': detalles.get('monto_total', None),
+                'pedido_id': detalles.get('pedido_id', None),
+                'direccion': detalles.get('direccion_envio', None),
+                'productos': detalles.get('items_comprados', None),
+            }
+            
+            items_ETL.append(registro)
+        items_ETL.sort(key=lambda x: x['fecha'], reverse=True)
+        
+        return render(request, 'ver_dynamodb.html', {'actividades': items_ETL})
+        
+    except Exception as e:
+        return render(request, 'ver_dynamodb.html', {'error': f"Error de plataforma: {str(e)}"})

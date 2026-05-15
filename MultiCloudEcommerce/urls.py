@@ -1,6 +1,6 @@
 
 from django.urls import path
-from app1.views import home, registro, iniciar_sesion, perfil, listado_pedidos, salir, carrito, agregar_carrito, checkout, confirmacion_compra, panel_admin, listausuarios, listadoProductos, gestionarPedidoAdmin, perfilAdministrador
+from app1.views import home, registro, iniciar_sesion, perfil, listado_pedidos, salir, carrito, agregar_carrito, checkout, confirmacion_compra, panel_admin, listausuarios, listadoProductos, gestionarPedidoAdmin, perfilAdministrador, ver_dynamodb
 from django.contrib import admin
 
 
@@ -20,6 +20,7 @@ urlpatterns = [
     path ('listado_usuarios/', listausuarios, name = 'listado_clientes'),
     path('inventario/', listadoProductos, name= 'productos'),
     path('gestionar-pedido/<int:pedido_id>/',gestionarPedidoAdmin, name='gestionar_pedido'),
-    path('perfil_administrador/', perfilAdministrador, name = 'perfilAdmin' )
+    path('perfil_administrador/', perfilAdministrador, name = 'perfilAdmin' ),
+    path('eventos/', ver_dynamodb, name='ver_dynamodb')
 ]
 

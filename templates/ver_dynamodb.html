@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>NEX COR - Auditoria de eventos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+
+<body class="bg-dark text-white">
+    <nav class="navbar navbar-dark navbar-custom py-3">
+        <div class="container">
+            <span class="navbar-brand fw-bold text-gold">
+                <i class="bi bi-cloud-check-fill me-2"></i>Auditoría de eventos del sistema
+            </span>
+            <div>
+                <span class="text-muted me-3" style="font-size: 0.9rem;">Sesión: {{ request.session.cliente_email }}</span>
+                <a href="{% url 'panel_admin' %}" class="btn btn-outline-light btn-sm">Volver al Panel</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenedor Principal -->
+    <div class="container mt-5">
+        <div class="row g-4">
+            
+            <!-- Tarjeta Lateral de Estado e Infraestructura -->
+            <div class="col-md-3">
+                <div class="info-card p-4 shadow h-100">
+                    <h5 class="text-gold mb-4 fw-bold"><i class="bi bi-cpu-fill"></i> Conectividad</h5>
+                    
+                    <p class="mb-1 text-muted">Base de Datos:</p>
+                    <p class="fw-bold text-white">Amazon DynamoDB</p>
+                    
+                    <p class="mb-1 text-muted">Región AWS:</p>
+                    <p class="fw-bold text-white">us-east-1</p>
+                    
+                    <p class="mb-1 text-muted">Estado del Flujo:</p>
+                    <span class="badge bg-success text-dark fw-bold mb-3">ONLINE</span>
+                    
+                    <hr class="border-secondary">
+                    
+                    <!-- Acciones del Panel -->
+                    <button class="btn btn-outline-warning btn-sm w-100 mb-2" onclick="window.location.reload();">
+                        <i class="bi bi-arrow-clockwise"></i> Sincronizar Logs
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tabla de Logs e Historial Principal -->
+            <div class="col-md-9">
+                <div class="info-card p-4 shadow">
+                    <h4 class="text-gold mb-4 fw-bold"><i class="bi bi-terminal-fill"></i> Eventos dentro del Sistema</h4>
+                    
+                    <!-- Alerta de control de errores integrada en el estilo oscuro -->
+                    {% if error %}
+                    <div class="alert alert-danger bg-dark border-danger text-danger alert-dismissible fade show mb-4" role="alert">
+                        <strong>⚠️ Error de Infraestructura AWS:</strong> No se pudo sincronizar el flujo con el servidor de registros Cloud.
+                        <small class="d-block text-muted mt-1">(Detalle técnico: {{ error }})</small>
+                    </div>
+                    {% endif %}
+
+                    <div class="table-responsive">
+                        <table class="table table-dark table-borderless align-middle">
+                            <thead class="text-muted border-bottom border-secondary">
+                                <tr>
+                                    <th>Fecha y Hora</th>
+                                    <th>ID Usuario</th>
+                                    <th>Tipo Evento</th>
+                                    <th>Identificador Principal</th>
+                                    <th class="text-end">Detalle</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for actividad in actividades %}
+                                <tr class="product-row border-bottom border-secondary">
+                                    <!-- Fecha -->
+                                    <td class="py-3 text-white fw-semibold" style="font-size: 0.9rem;">{{ actividad.fecha }}</td>
+                                    
+                                    <!-- ID Cliente -->
+                                    <td><span class="text-gold">#</span>{{ actividad.usuario_id }}</td>
+                                    
+                                    <!-- Badges de Eventos -->
+                                    <td>
+                                        {% if "REGISTRADO" in actividad.tipo_evento %}
+                                            <span class="badge badge-registro"><i class="bi bi-person-plus me-1"></i> REGISTRO</span>
+                                        {% elif "PAGO" in actividad.tipo_evento %}
+                                            <span class="badge badge-pago"><i class="bi bi-credit-card me-1"></i> PAGO</span>
+                                        {% elif "COMPRA" in actividad.tipo_evento %}
+                                            <span class="badge badge-compra"><i class="bi bi-bag-check me-1"></i> COMPRA</span>
+                                        {% else %}
+                                            <span class="badge badge-defecto">{{ actividad.tipo_evento }}</span>
+                                        {% endif %}
+                                    </td>
+                                    
+                                    <!-- Cuenta / Nombre -->
+                                    <td>
+                                        <div class="fw-bold text-white">{{ actividad.nombre }}</div>
+                                        <small class="text-muted d-block" style="font-size: 0.8rem;">{{ actividad.correo }}</small>
+                                    </td>
+                                    
+                                    <!-- Botón Desplegar -->
+                                    <td class="text-end">
+                                        <button class="btn btn-outline-warning btn-sm py-1 px-2" type="button" data-bs-toggle="collapse" data-bs-target="#detalle-{{ forloop.counter }}" style="font-size: 0.8rem;">
+                                            <i class="bi bi-eye"></i> Ver
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <!-- Fila Desplegable (Acordeón Oculto) con el mismo estilo oscuro -->
+                                <tr class="collapse" id="detalle-{{ forloop.counter }}">
+                                    <td colspan="5" class="p-3 detalle-nosql">
+                                        <div class="p-2 text-white" style="font-size: 0.9rem;">
+                                            <h6 class="text-gold fw-bold mb-3"><i class="bi bi-braces me-2"></i>Metadatos de la Operación NoSQL</h6>
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <span class="text-muted">Método HTTP:</span> <code class="text-warning bg-transparent p-0">{{ actividad.metodo }}</code>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <span class="text-muted">Dirección IP Origen:</span> <span class="fw-mono text-info">{{ actividad.ip }}</span>
+                                                </div>
+                                                
+                                                {% if actividad.monto %}
+                                                <div class="col-md-6">
+                                                    <span class="text-muted">Monto Transacción:</span> <span class="text-gold fw-bold">${{ actividad.monto }}</span>
+                                                </div>
+                                                {% endif %}
+
+                                                {% if actividad.pedido_id %}
+                                                <div class="col-md-6">
+                                                    <span class="text-muted">ID Pedido Relacionado:</span> <span class="badge bg-secondary">#{{ actividad.pedido_id }}</span>
+                                                </div>
+                                                {% endif %}
+
+                                                {% if actividad.direccion %}
+                                                <div class="col-12 border-top border-secondary pt-2">
+                                                    <span class="text-muted">Dirección Registrada:</span> <span class="text-white-50">{{ actividad.direccion }}</span>
+                                                </div>
+                                                {% endif %}
+
+                                                {% if actividad.productos %}
+                                                <div class="col-12 border-top border-secondary pt-2">
+                                                    <span class="text-muted d-block mb-1">Artículos en Payload:</span>
+                                                    {% for prod in actividad.productos %}
+                                                        <span class="badge bg-dark border border-secondary text-light me-1"><i class="bi bi-box-seam text-gold me-1"></i>{{ prod }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                {% if not error %}
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-muted">No se detectaron transacciones NoSQL en los registros de auditoría.</td>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Pie de Página Estilo NEX COR -->
+    <footer class="py-4 mt-5 text-center">
+        <p class="text-muted">&copy; 2026 NEX COR - Sistema de Gestión</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
