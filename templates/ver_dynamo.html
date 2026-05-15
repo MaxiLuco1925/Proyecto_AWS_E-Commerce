@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registros DynamoDB</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>📊 Registros de DynamoDB</h2>
+        <a href="/panel_admin/" class="btn btn-secondary mb-3">← Volver</a>
+        
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Usuario ID</th>
+                        <th>Fecha</th>
+                        <th>Evento</th>
+                        <th>Detalles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for act in actividades %}
+                    <tr>
+                        <td>{{ act.userid }}</td>
+                        <td>{{ act.fecha }}</td>
+                        <td>
+                            {% if act.evento == 'CLIENTE_REGISTRADO_AUTO' %}
+                                ✅ Registro
+                            {% elif act.evento == 'COMPRA_REALIZADA' %}
+                                🛒 Compra
+                            {% elif act.evento == 'PAGO_REALIZADO' %}
+                                💰 Pago
+                            {% else %}
+                                {{ act.evento }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-info" onclick="verDetalle({{ forloop.counter0 }})">
+                                Ver
+                            </button>
+                            <div id="detalle{{ forloop.counter0 }}" style="display:none; margin-top:10px">
+                                <pre class="bg-light p-2">{{ act.detalles|pprint }}</pre>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center">No hay registros</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+    function verDetalle(id) {
+        var div = document.getElementById('detalle' + id);
+        if (div.style.display === 'none') {
+            div.style.display = 'block';
+        } else {
+            div.style.display = 'none';
+        }
+    }
+    </script>
+</body>
+</html>
